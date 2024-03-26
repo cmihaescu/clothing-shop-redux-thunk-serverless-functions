@@ -1,0 +1,33 @@
+.checkout-item-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 20px auto;
+    border-top: solid 1px;
+    padding: 10px 10px 0 10px;
+
+img {
+    width: auto;
+    height: 120px;
+
+}
+span{
+    width: 20%;
+    text-align: center;
+}
+}
+
+.quantity-container{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.removeIcon {
+    width: 20%;
+    text-align: center;
+    cursor: pointer;
+    height: auto;
+}

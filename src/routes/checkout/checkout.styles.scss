@@ -1,0 +1,35 @@
+.table-columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  margin: 20px auto;
+  padding: 10px 10px 0 10px;
+
+  span {
+    width: 20%;
+    text-align: center;
+  }
+}
+
+.quantity-svg {
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+h3 {
+  text-align: center;
+}
+
+.totalPriceBox {
+  text-align: end;
+  width: 80%;
+}
+
+#revolutPay {
+  width: 50%;
+  margin: 20px auto 0 auto;
+}

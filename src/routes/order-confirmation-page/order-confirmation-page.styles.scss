@@ -1,0 +1,32 @@
+.confirmation-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 75%;
+  font-size: 2rem;
+  margin: 0 auto;
+  text-align: justify;
+}
+
+.shop-some-more-btn {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: 0.3s;
+  background-color: #000;
+  color: #fff;
+  margin: auto;
+  font-size: 2rem;
+
+  &:hover {
+    background-color: #fff;
+    color: #000;
+    border: #000 solid;
+  }
+}
+
+.confirmation-page-content p {
+  width: 60%;
+}
