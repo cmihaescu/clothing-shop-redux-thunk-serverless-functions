@@ -15,6 +15,8 @@ export const Checkout = () => {
   const currency = useSelector(currencySelector);
   const cartItems = useSelector(cartItemsSelector);
   const totalPrice = useSelector(cartTotalPriceSelector);
+  const baseURL = window.location.origin;
+  console.log("location: ", baseURL);
 
   useEffect(() => {
     let canceled = false;
@@ -24,21 +26,21 @@ export const Checkout = () => {
       currency,
     };
     RevolutCheckout.payments({
-      locale: "en", // Optional, defaults to 'en'
-      mode: "sandbox", // Optional, defaults to 'prod'
-      publicToken: process.env.REACT_APP_REVOLUT_PK, // Merchant public API key
+      locale: "en",
+      mode: "sandbox",
+      publicToken: process.env.REACT_APP_REVOLUT_PK,
     }).then((paymentInstance) => {
       if (canceled) {
         return;
       }
 
       const paymentOptions = {
-        currency, // 3-letter currency code
-        totalAmount: orderDetails.amount, // in lowest denomination e.g., cents
+        currency,
+        totalAmount: orderDetails.amount,
         redirectUrls: {
-          success: "http://localhost:8888/success",
-          failure: "http://localhost:8888/failure",
-          cancel: "http://localhost:8888/checkout",
+          success: `${baseURL}/success`,
+          failure: `${baseURL}/failure`,
+          cancel: `${baseURL}/checkout`,
         },
         createOrder: async () => {
           let order = await dispatch(createOrderIdAsync(orderDetails));
