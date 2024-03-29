@@ -30,6 +30,16 @@ export const handler = async (event) => {
         url: "https://sandbox-merchant.revolut.com/api/orders/" + body,
       };
       break;
+    case "retrieve_order_list":
+      let url = "https://sandbox-merchant.revolut.com/api/1.0/orders";
+      if (body.params.length > 0) {
+        url += "?" + body.params.join("&");
+      }
+      config = {
+        ...config,
+        url,
+      };
+      break;
     default:
       console.log("API action scenario not available");
   }

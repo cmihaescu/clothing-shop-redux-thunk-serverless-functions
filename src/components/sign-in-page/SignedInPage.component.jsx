@@ -1,7 +1,19 @@
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user-selector";
+import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
 
 const SignedInPage = () => {
+  let body = {
+    params: [],
+  };
+
+  try {
+    const userOrdersList = async () =>
+      await apiClientRevolutOrders("GET", body, "retrieve_order_list");
+  } catch (error) {
+    console.error("There was a problem retrieving the orders list: ", error);
+  }
+
   let user = useSelector(selectCurrentUser);
   let userFirstName = "";
   let userLastName = "";
