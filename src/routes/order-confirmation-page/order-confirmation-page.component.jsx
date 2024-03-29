@@ -16,7 +16,11 @@ export const OrderConfirmationPage = ({ orderId }) => {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      let order = await apiClientRevolutOrders("get", orderId, "retrieve");
+      let order = await apiClientRevolutOrders(
+        "get",
+        orderId,
+        "retrieve_order"
+      );
       return order;
     };
     fetchOrder()
