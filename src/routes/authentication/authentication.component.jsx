@@ -8,7 +8,8 @@ import { selectCurrentUser } from "../../store/user/user-selector";
 
 const Authentication = () => {
   const currentUser = useSelector(selectCurrentUser);
-
+  // console.log("currentUser in authentication page", currentUser.email);
+  // aicia inca nu il are
   return (
     <div className="authentication-container">
       {currentUser ? (

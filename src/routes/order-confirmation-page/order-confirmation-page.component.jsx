@@ -32,7 +32,7 @@ export const OrderConfirmationPage = ({ orderId }) => {
         }
       })
       .catch((error) => console.log(error));
-  }, []);
+  });
 
   return (
     <div className="confirmation-page-content">

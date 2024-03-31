@@ -2,34 +2,16 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user-selector";
 import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
 import Button from "../button/button.component";
-import { useEffect, useState } from "react";
-import { getUserFromFirebase } from "../../utils/firebase.utils";
+import { useState } from "react";
 
 const SignedInPage = () => {
   const [orders, setOrders] = useState([]);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, seLastName] = useState("");
-  let user = useSelector(selectCurrentUser);
-  let { uid, email, displayName } = user;
+  const currentUser = useSelector(selectCurrentUser);
+  let { email, displayName, uid } = currentUser;
 
-  // useEffect(() => {
-  //   getUserFromFirebase(uid)
-  //     .then((firebaseUser) => {
-  //       if (!email) {
-  //         email = firebaseUser.email.stringValue;
-  //       }
-  //       if (!displayName) {
-  //         displayName = firebaseUser.displayName.stringValue;
-  //       }
-  //       if (displayName) {
-  //         displayName =
-  //           displayName.charAt(0).toUpperCase() + displayName.slice(1);
-  //         setFirstName(displayName.split(" ")[0]);
-  //         seLastName(displayName.split(" ")[1]);
-  //       }
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, []);
+  displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+  let firstName = displayName.split(" ")[0];
+  let lastName = displayName.split(" ")[1];
 
   const handleRetrieveOrders = async () => {
     try {
@@ -45,8 +27,7 @@ const SignedInPage = () => {
   };
   return (
     <div className="SignedInPage">
-      {/* <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1> */}
-      <h1>{displayName}</h1>
+      <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1>
       <h3>Page still in construction</h3>
       <Button onClick={handleRetrieveOrders}>Retrieve my orders</Button>
       <p>Signed in with email: {email}</p>

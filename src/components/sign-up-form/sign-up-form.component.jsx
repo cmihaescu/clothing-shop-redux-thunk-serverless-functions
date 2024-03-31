@@ -35,15 +35,19 @@ const SignUpForm = () => {
       alert("passwords do not match");
       return;
     }
+    dispatch(
+      setCurrentUser({
+        displayName,
+        email,
+      })
+    );
 
     try {
       const { user } = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
-      let createdUser = await createUserDocumentFromAuth(user, { displayName });
-      await dispatch(setCurrentUser(createdUser));
-      console.log("user successfully created and updated in redux state");
+      createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
