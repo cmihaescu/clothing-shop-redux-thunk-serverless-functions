@@ -1,19 +1,24 @@
 import "./navigation.styles.scss";
 import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { ReactComponent as RevolutLogo } from "../../assets/revolut.svg";
 import revolutLogo from "../../assets/Revolut-Logo.png";
 import { signOutUser } from "../../utils/firebase.utils";
 import { CartIcon } from "../../components/cart-icon/cart-icon.component";
 import { CartDropdown } from "../../components/cart-dropdown/cart-dropdown.component";
 import CurrencySwitcher from "../../components/currency-switcher/currency-switcher.component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user-selector";
 import { cartDropdownSelector } from "../../store/cart/cart-selectors";
+import { setCurrentUser } from "../../store/user/user-actions";
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
   const cartDropdown = useSelector(cartDropdownSelector);
+  const dispatch = useDispatch();
+  const handleSignOut = () => {
+    signOutUser();
+    dispatch(setCurrentUser(null));
+  };
 
   return (
     <Fragment>
@@ -29,9 +34,14 @@ const Navigation = () => {
             Shop
           </Link>
           {currentUser ? (
-            <Link className="nav-link" onClick={signOutUser}>
-              Sign Out
-            </Link>
+            <>
+              <Link className="nav-link" to="authentication">
+                My Account
+              </Link>
+              <Link className="nav-link" onClick={handleSignOut}>
+                Sign Out
+              </Link>
+            </>
           ) : (
             <Link className="nav-link" to="authentication">
               Sign In

@@ -8,7 +8,7 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cart"],
+  whitelist: ["cart", "user"],
 };
 const middleWares = [logger, thunk];
 const composedEnhancers = compose(applyMiddleware(...middleWares));

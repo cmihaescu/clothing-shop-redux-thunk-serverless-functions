@@ -38,7 +38,11 @@ export const updateCartOrderIdFailure = (error) =>
 export const createOrderIdAsync = (order_details) => async (dispatch) => {
   dispatch(updateCartOrderIdStart());
   try {
-    const order = await apiClientRevolutOrders("post", order_details, "create");
+    const order = await apiClientRevolutOrders(
+      "post",
+      order_details,
+      "create_order"
+    );
     dispatch(updateCartOrderIdSuccess(order.id));
     return order;
   } catch (error) {

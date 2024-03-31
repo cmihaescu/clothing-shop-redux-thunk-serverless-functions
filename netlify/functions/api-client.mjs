@@ -4,7 +4,15 @@ require("dotenv").config();
 const { REVOLUT_SK_SANDBOX } = process.env;
 
 export const handler = async (event) => {
-  console.log("create order endpoint hit with", JSON.parse(event.body));
+  console.log("revolut endpoint hit with", JSON.parse(event.body));
+
+  const objectToQueryString = (obj) => {
+    const keys = Object.keys(obj);
+    const keyValuePairs = keys.map((key) => {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
+    });
+    return keyValuePairs.join("&");
+  };
 
   let { body, method, apiAction } = JSON.parse(event.body);
   let config = {
@@ -17,17 +25,28 @@ export const handler = async (event) => {
     },
   };
   switch (apiAction) {
-    case "create":
+    case "create_order":
       config = {
         ...config,
         url: "https://sandbox-merchant.revolut.com/api/orders",
         data: body,
       };
       break;
-    case "retrieve":
+    case "retrieve_order":
       config = {
         ...config,
         url: "https://sandbox-merchant.revolut.com/api/orders/" + body,
+      };
+      break;
+    case "retrieve_order_list":
+      let url = "https://sandbox-merchant.revolut.com/api/1.0/orders";
+      if (Object.keys(body).length) {
+        let queryParams = "?" + objectToQueryString(body);
+        url += queryParams;
+      }
+      config = {
+        ...config,
+        url,
       };
       break;
     default:
@@ -35,13 +54,13 @@ export const handler = async (event) => {
   }
 
   try {
-    let revolutOrder = await axios.request(config).then((response) => {
+    let revolutApiRequest = await axios.request(config).then((response) => {
       console.log("revolut api response: ", response.data);
       return response.data;
     });
     return {
       statusCode: 200,
-      body: JSON.stringify(revolutOrder),
+      body: JSON.stringify(revolutApiRequest),
     };
   } catch (error) {
     console.error({ error });

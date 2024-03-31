@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const apiClientRevolutOrders = async (method, body, apiAction) => {
-  let order = await axios("/.netlify/functions/api-client", {
+  let revolutApiRequest = await axios("/.netlify/functions/api-client", {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -13,10 +13,10 @@ export const apiClientRevolutOrders = async (method, body, apiAction) => {
     })
     .catch((err) => {
       console.error(
-        `An error occured while trying to ${apiAction} the order: `,
+        `An error occured while trying to ${apiAction} the revolutApiRequest: `,
         err
       );
     });
 
-  return order;
+  return revolutApiRequest;
 };

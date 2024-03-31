@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -70,6 +71,14 @@ export const getCategoriesAndDocuments = async () => {
   return categoryMap;
 };
 
+export const getUserFromFirebase = async (uid) => {
+  const userDocRef = doc(db, "users", uid);
+  const userSnapshot = await getDoc(userDocRef);
+  if (userSnapshot.exists()) {
+    return userSnapshot._document.data.value.mapValue.fields;
+  }
+};
+
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
@@ -83,15 +92,21 @@ export const createUserDocumentFromAuth = async (
 
     try {
       await setDoc(userDocRef, {
-        displayName,
         email,
         createdAt,
         ...additionalInformation,
       });
+      await updateProfile(auth.currentUser, { ...additionalInformation });
+      console.log(
+        "return auth.currentUser - no user existed - firebase utils",
+        auth.currentUser
+      );
+      return auth.currentUser;
     } catch (error) {
       console.log("error creating the user", error.message);
     }
   } else {
+    console.log("return userDocRef - user existed - firebaseutils", userDocRef);
     return userDocRef;
   }
 };

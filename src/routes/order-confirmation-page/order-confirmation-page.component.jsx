@@ -14,11 +14,11 @@ export const OrderConfirmationPage = ({ orderId }) => {
   const successfulParagraph = `Thank you for your order. The payment was successful. Order ID is ${orderId}`;
   const failureParagraph = `${queryFailureMessage}. Order ID is ${orderId}. Your cart has not been cleared in case you wish to try with another card`;
 
+  const fetchOrder = async () => {
+    let order = await apiClientRevolutOrders("get", orderId, "retrieve_order");
+    return order;
+  };
   useEffect(() => {
-    const fetchOrder = async () => {
-      let order = await apiClientRevolutOrders("get", orderId, "retrieve");
-      return order;
-    };
     fetchOrder()
       .then((order) => {
         if (
@@ -32,7 +32,7 @@ export const OrderConfirmationPage = ({ orderId }) => {
         }
       })
       .catch((error) => console.log(error));
-  }, []);
+  });
 
   return (
     <div className="confirmation-page-content">
