@@ -1,0 +1,23 @@
+.SignedInPage {
+  width: 100%;
+  & > h1 {
+    text-align: center;
+  }
+
+  .account-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+}
+
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+.go-to-shop-link:hover {
+  font-size: 1.4rem;
+}
