@@ -9,10 +9,13 @@ export const OrderConfirmationPage = ({ orderId }) => {
   const [orderSuccess, setOrderSuccess] = useState("initial");
   const dispatch = useDispatch();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const queryFailureMessage = queryParams.get("_rp_fr");
+  let queryParams = new URLSearchParams(location.search);
+  let queryFailureMessage = queryParams.get("_rp_fr");
+  queryFailureMessage
+    ? (queryFailureMessage += ". ")
+    : (queryFailureMessage = "Unfortunately, your payment failed. ");
   const successfulParagraph = `Thank you for your order. The payment was successful. Order ID is ${orderId}`;
-  const failureParagraph = `${queryFailureMessage}. Order ID is ${orderId}. Your cart has not been cleared in case you wish to try with another card`;
+  const failureParagraph = `${queryFailureMessage}Order ID is ${orderId}. Your cart has not been cleared in case you wish to try with another card`;
 
   const fetchOrder = async () => {
     let order = await apiClientRevolutOrders("get", orderId, "retrieve_order");
