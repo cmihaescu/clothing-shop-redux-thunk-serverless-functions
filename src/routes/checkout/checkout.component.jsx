@@ -1,62 +1,22 @@
 import { CheckoutItem } from "../../components/checkout-item/checkout-item.component";
 import "./checkout.styles.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   currencySelector,
   cartItemsSelector,
   cartTotalPriceSelector,
 } from "../../store/cart/cart-selectors";
-import { createOrderIdAsync } from "../../store/cart/cart-actions";
-import RevolutCheckout from "@revolut/checkout";
-import { useEffect } from "react";
+import PaymentMethods from "../../components/payment-methods/payment-methods.component";
 
 export const Checkout = () => {
-  const dispatch = useDispatch();
   const currency = useSelector(currencySelector);
   const cartItems = useSelector(cartItemsSelector);
   const totalPrice = useSelector(cartTotalPriceSelector);
-  const baseURL = window.location.origin;
-  console.log("location: ", baseURL);
 
-  useEffect(() => {
-    let canceled = false;
-    let revolutPay = null;
-    let orderDetails = {
-      amount: totalPrice * 100,
-      currency,
-    };
-    RevolutCheckout.payments({
-      locale: "en",
-      mode: "sandbox",
-      publicToken: process.env.REACT_APP_REVOLUT_PK,
-    }).then((paymentInstance) => {
-      if (canceled) {
-        return;
-      }
-
-      const paymentOptions = {
-        currency,
-        totalAmount: orderDetails.amount,
-        redirectUrls: {
-          success: `${baseURL}/success`,
-          failure: `${baseURL}/failure`,
-          cancel: `${baseURL}/checkout`,
-        },
-        createOrder: async () => {
-          let order = await dispatch(createOrderIdAsync(orderDetails));
-          return { publicId: order.token };
-        },
-      };
-
-      revolutPay = paymentInstance.revolutPay;
-      revolutPay.mount(document.getElementById("revolutPay"), paymentOptions);
-    });
-
-    return () => {
-      canceled = true;
-      revolutPay?.destroy();
-    };
-  }, [totalPrice, currency]);
+  let orderDetails = {
+    amount: totalPrice * 100,
+    currency,
+  };
 
   return (
     <div>
@@ -75,7 +35,7 @@ export const Checkout = () => {
           <div className="totalPriceBox">
             TOTAL: {totalPrice} {currency}
           </div>
-          <div id="revolutPay"></div>
+          <PaymentMethods orderDetails={orderDetails} />
         </>
       ) : (
         <h3>You have no items in your cart</h3>
