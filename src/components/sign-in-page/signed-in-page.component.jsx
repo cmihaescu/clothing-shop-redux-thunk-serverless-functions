@@ -1,23 +1,24 @@
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user-selector";
-import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolutAPI.utils";
 import { useState } from "react";
 import Button from "../button/button.component";
-import "./SignedInPage.styles.scss";
+import "./signed-in-page.styles.scss";
 import { Link } from "react-router-dom";
 
 const SignedInPage = () => {
   const [orders, setOrders] = useState([]);
   const [showOrders, setShowOrders] = useState(false);
+  const [showSavedCards, setSavedCards] = useState(false);
   const currentUser = useSelector(selectCurrentUser);
   let { email, displayName, uid } = currentUser;
-
+  console.log("redux currentUser", currentUser);
   displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
   let firstName = displayName.split(" ")[0];
 
   const handleRetrieveOrders = async () => {
     try {
-      const ordersList = await apiClientRevolutOrders(
+      const ordersList = await apiClientRevolut(
         "GET",
         { email, state: "COMPLETED" },
         "retrieve_order_list"
@@ -28,6 +29,9 @@ const SignedInPage = () => {
       console.error("There was a problem retrieving the orders list: ", error);
     }
   };
+
+  const handleRetrieveSavedCards = () => {};
+
   return (
     <div className="SignedInPage">
       <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1>
@@ -69,6 +73,10 @@ const SignedInPage = () => {
               )}
             </ol>
           )}
+
+          <Button onClick={handleRetrieveSavedCards}>
+            {showSavedCards ? "hide" : "show"} my saved cards
+          </Button>
         </div>
       </div>
     </div>

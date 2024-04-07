@@ -97,16 +97,11 @@ export const createUserDocumentFromAuth = async (
         ...additionalInformation,
       });
       await updateProfile(auth.currentUser, { ...additionalInformation });
-      console.log(
-        "return auth.currentUser - no user existed - firebase utils",
-        auth.currentUser
-      );
       return auth.currentUser;
     } catch (error) {
-      console.log("error creating the user", error.message);
+      console.error("error creating the user", error.message);
     }
   } else {
-    console.log("return userDocRef - user existed - firebaseutils", userDocRef);
     return userDocRef;
   }
 };

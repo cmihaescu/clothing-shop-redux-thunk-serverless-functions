@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const apiClientRevolutOrders = async (method, body, apiAction) => {
+export const apiClientRevolut = async (method, body, apiAction) => {
   let revolutApiRequest = await axios("/.netlify/functions/api-client", {
     method: "post",
     headers: {

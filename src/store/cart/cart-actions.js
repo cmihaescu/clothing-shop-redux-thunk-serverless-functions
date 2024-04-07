@@ -1,6 +1,6 @@
 import { CART_ACTION_TYPES } from "./cart-types";
 import { createAction } from "../../utils/reducer.utils";
-import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolutAPI.utils";
 
 const {
   SET_CURRENCY,
@@ -38,11 +38,7 @@ export const updateCartOrderIdFailure = (error) =>
 export const createOrderIdAsync = (order_details) => async (dispatch) => {
   dispatch(updateCartOrderIdStart());
   try {
-    const order = await apiClientRevolutOrders(
-      "post",
-      order_details,
-      "create_order"
-    );
+    const order = await apiClientRevolut("post", order_details, "create_order");
     dispatch(updateCartOrderIdSuccess(order.id));
     return order;
   } catch (error) {

@@ -12,7 +12,6 @@ const PaymentMethods = ({ orderDetails }) => {
   let { amount, currency } = orderDetails;
 
   const handlePayWithPopup = async (orderDetails) => {
-    console.log("triggered with ", orderDetails);
     let order = await dispatch(createOrderIdAsync(orderDetails));
     RevolutCheckout(order.token, "sandbox").then(function (instance) {
       instance.payWithPopup({
@@ -69,8 +68,9 @@ const PaymentMethods = ({ orderDetails }) => {
   return (
     <div className="payment-methods">
       <Button onClick={() => handlePayWithPopup(orderDetails)}>
-        Pay with card
+        Pay with a new card
       </Button>
+      <Button>Pay with a saved card</Button>
       <div id="revolutPay"></div>
     </div>
   );

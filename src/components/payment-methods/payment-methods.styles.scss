@@ -1,8 +1,6 @@
 .payment-methods {
-  width: 200px;
-  height: 125px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin: 4rem auto 0 auto;
@@ -10,5 +8,6 @@
   & > button {
     min-width: 200px;
     overflow: hidden;
+    font-size: 0.95rem;
   }
 }
