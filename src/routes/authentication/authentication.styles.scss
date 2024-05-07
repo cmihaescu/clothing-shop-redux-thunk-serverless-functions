@@ -1,7 +1,8 @@
 .authentication-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(337px, 1fr));
+  justify-items: center;
+  gap: 16px;
   margin: 10% auto;
   font-size: 1.2rem;
 }

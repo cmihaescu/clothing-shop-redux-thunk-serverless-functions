@@ -1,0 +1,25 @@
+.mobile-navigation-menu {
+  position: relative;
+  .rotate-menu-icon {
+    transition: all 0.3s;
+    rotate: 90deg;
+  }
+
+  .reverse-rotate-menu-icon {
+    transition: all 0.3s;
+    rotate: 0deg;
+  }
+  .nav-links-mobile-container {
+    position: absolute;
+    width: 300px;
+    font-size: 3rem;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid black;
+    background-color: white;
+    top: 0px;
+    right: 0px;
+    z-index: 5;
+  }
+}

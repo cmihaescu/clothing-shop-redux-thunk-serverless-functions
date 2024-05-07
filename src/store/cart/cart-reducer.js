@@ -3,6 +3,7 @@ import { CART_ACTION_TYPES } from "./cart-types";
 const {
   SET_CURRENCY,
   SET_CART_DROPDOWN,
+  SET_MOBILE_NAVIGATION_DROPDOWN,
   UPDATE_CART_ITEMS,
   UPDATE_ORDER_ID_START,
   UPDATE_ORDER_ID_SUCCESS,
@@ -12,6 +13,7 @@ const {
 
 export const CART_INITIAL_STATE = {
   cartDropdown: null,
+  mobileNavigationDropdown: null,
   cartItems: [],
   totalItems: 0,
   totalPrice: 0,
@@ -33,6 +35,11 @@ export const cartReducer = (state = CART_INITIAL_STATE, action = {}) => {
       return {
         ...state,
         cartDropdown: payload,
+      };
+    case SET_MOBILE_NAVIGATION_DROPDOWN:
+      return {
+        ...state,
+        mobileNavigationDropdown: payload,
       };
     case UPDATE_CART_ITEMS:
       const { cartItems, totalItems, totalPrice } = payload;

@@ -3,7 +3,7 @@ import { selectCurrentUser } from "../../store/user/user-selector";
 import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
 import { useState } from "react";
 import Button from "../button/button.component";
-import "./SignedInPage.styles.scss";
+import "./signed-in-page.styles.scss";
 import { Link } from "react-router-dom";
 
 const SignedInPage = () => {
@@ -29,7 +29,7 @@ const SignedInPage = () => {
     }
   };
   return (
-    <div className="SignedInPage">
+    <div className="signed-in-page">
       <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1>
       <div className="account-container">
         <div className="account-details">
