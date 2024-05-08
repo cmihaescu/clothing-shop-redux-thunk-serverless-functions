@@ -1,12 +1,17 @@
+@import "../../utils/variables";
+
 .category-div {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 20px;
-    row-gap: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 0.8fr));
+  justify-content: center;
+  align-content: center;
+  min-width: $min-card-width;
+  column-gap: 20px;
+  row-gap: 50px;
 }
 
 .category-title {
-    font-size: 38px;
-    margin-bottom: 25px;
-    text-align: center;
+  font-size: 38px;
+  margin-bottom: 25px;
+  text-align: center;
 }

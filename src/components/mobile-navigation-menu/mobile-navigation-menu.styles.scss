@@ -1,5 +1,7 @@
 .mobile-navigation-menu {
   position: relative;
+  cursor: pointer;
+
   .rotate-menu-icon,
   .reverse-rotate-menu-icon {
     transition: all 0.3s;
