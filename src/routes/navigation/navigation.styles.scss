@@ -8,17 +8,18 @@
   margin-bottom: 25px;
 
   .logo-container {
-    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .logo {
-    width: 100%;
-    min-width: 150px;
+  .revolut-logo {
+    width: 150px;
   }
-
+  .r-logo {
+    min-width: 50px;
+    max-width: 75px;
+  }
   .mobile-navigation-menu {
     display: none;
   }

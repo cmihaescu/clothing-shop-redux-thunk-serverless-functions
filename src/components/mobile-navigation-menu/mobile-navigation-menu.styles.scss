@@ -1,17 +1,23 @@
 .mobile-navigation-menu {
   position: relative;
-  .rotate-menu-icon {
+  .rotate-menu-icon,
+  .reverse-rotate-menu-icon {
     transition: all 0.3s;
+    width: 50px !important;
+  }
+
+  .rotate-menu-icon {
     rotate: 90deg;
   }
+  .reverse-rotate-menu-icon {
+    rotate: 0deg;
+  }
+
   .nav-link:hover {
     background-color: #000 !important;
     color: #fff;
   }
-  .reverse-rotate-menu-icon {
-    transition: all 0.3s;
-    rotate: 0deg;
-  }
+
   .nav-links-mobile-container {
     position: absolute;
     width: 300px;

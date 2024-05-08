@@ -37,9 +37,7 @@ const SignedInPage = () => {
           <p>Name: {displayName}</p>
         </div>
         <div className="account-orders">
-          <Button onClick={handleRetrieveOrders}>
-            {showOrders ? "hide" : "show"} my completed orders
-          </Button>
+          <Button onClick={handleRetrieveOrders}>completed orders</Button>
           {showOrders && (
             <ol>
               {orders.length < 1 ? (

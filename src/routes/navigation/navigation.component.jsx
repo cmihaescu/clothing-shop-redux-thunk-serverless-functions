@@ -2,6 +2,7 @@ import "./navigation.styles.scss";
 import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
 import revolutLogo from "../../assets/Revolut-Logo.png";
+import RLogo from "../../assets/R-Logo.png";
 import MenuIcon from "../../assets/menu.svg";
 import { signOutUser } from "../../utils/firebase.utils";
 import { CartIcon } from "../../components/cart-icon/cart-icon.component";
@@ -16,6 +17,7 @@ import {
 import { setCurrentUser } from "../../store/user/user-actions";
 import { setMobileNavigationDropdown } from "../../store/cart/cart-actions";
 import MobileNavigationMenu from "../../components/mobile-navigation-menu/mobile-navigation-menu.component";
+import scssVariables from "../../utils/_variables.scss";
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
@@ -31,12 +33,19 @@ const Navigation = () => {
   const handleMobileMenuIconClick = () => {
     dispatch(setMobileNavigationDropdown(!mobileNavigationDropdown));
   };
-
   return (
     <Fragment>
       <div className="navigation">
         <Link className="logo-container" to="/">
-          <img src={revolutLogo} alt="revolut-logo" className="logo" />
+          {window.innerWidth < parseInt(scssVariables.mobileBreakpoint, 10) ? (
+            <img src={RLogo} alt="r-logo" className="r-logo" />
+          ) : (
+            <img
+              src={revolutLogo}
+              alt="revolut-logo"
+              className="revolut-logo"
+            />
+          )}
         </Link>
         <div className="nav-links-container">
           <Link className="nav-link" to="/">
