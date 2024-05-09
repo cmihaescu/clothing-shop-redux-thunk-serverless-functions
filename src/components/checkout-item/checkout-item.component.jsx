@@ -25,13 +25,10 @@ export const CheckoutItem = ({ product }) => {
     dispatch(updateCartItemsReducer(decreaseItemFromCart(cartItems, product)));
   const handleRemoveFromCart = () =>
     dispatch(updateCartItemsReducer(removeItemFromCart(cartItems, product)));
-
   return (
     <div className="checkout-item-container">
-      <span>
-        <img src={imageUrl} alt={name}></img>
-      </span>
-      <span>{name}</span>
+      <img src={imageUrl} alt={name}></img>
+      <span className="checkout-product-description">{name}</span>
       <div className="quantity-container">
         <ArrowBackIosIcon
           onClick={handleAmountDecrease}

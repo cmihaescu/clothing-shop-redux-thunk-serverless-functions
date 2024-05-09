@@ -19,12 +19,12 @@ export const Checkout = () => {
   };
 
   return (
-    <div>
+    <div className="checkout-container">
       {cartItems.length > 0 ? (
         <>
           <div className="table-columns">
             <span>Product</span>
-            <span>Description</span>
+            <span className="checkout-product-description">Description</span>
             <span>Quantity</span>
             <span>Price</span>
             <span>Remove</span>

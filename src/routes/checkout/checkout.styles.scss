@@ -1,3 +1,8 @@
+@import "../../utils/variables";
+.checkout-container {
+  min-width: $min-card-width;
+}
+
 .table-columns {
   display: flex;
   flex-direction: row;
@@ -28,4 +33,14 @@ h3 {
   text-align: end;
   width: 80%;
   font-size: 1.7rem;
+}
+
+@media (max-width: $checkout-smaller-ui-breakpoint) {
+  .checkout-container {
+    font-size: 1rem !important;
+  }
+  .table-columns {
+    font-size: 1rem;
+    width: 100%;
+  }
 }

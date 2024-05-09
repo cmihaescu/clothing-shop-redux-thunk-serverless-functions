@@ -1,18 +1,22 @@
+@import "../../utils/variables";
+
 .category-preview-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
-  
-    .title {
-      font-size: 28px;
-      margin-bottom: 25px;
-      cursor: pointer;
-    }
-  
-    .preview {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      column-gap: 20px;
-    }
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+
+  .title {
+    font-size: 28px;
+    margin-bottom: 25px;
+    cursor: pointer;
   }
-  
+
+  .preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 0.8fr));
+    justify-content: center;
+    align-content: center;
+    min-width: $min-card-width;
+    column-gap: 20px;
+  }
+}

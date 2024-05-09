@@ -5,6 +5,7 @@ import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
 const {
   SET_CURRENCY,
   SET_CART_DROPDOWN,
+  SET_MOBILE_NAVIGATION_DROPDOWN,
   UPDATE_CART_ITEMS,
   UPDATE_ORDER_ID_START,
   UPDATE_ORDER_ID_SUCCESS,
@@ -18,6 +19,10 @@ export const setCurrency = (currency) => {
 
 export const setCartDropdown = (cartDropdown) => {
   return createAction(SET_CART_DROPDOWN, cartDropdown);
+};
+
+export const setMobileNavigationDropdown = (mobileNavigationDropdown) => {
+  return createAction(SET_MOBILE_NAVIGATION_DROPDOWN, mobileNavigationDropdown);
 };
 
 export const clearCart = () => {
