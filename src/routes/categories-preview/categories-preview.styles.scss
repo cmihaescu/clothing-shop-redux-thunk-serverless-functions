@@ -1,0 +1,8 @@
+@import "../../utils/variables";
+
+.categories-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: $min-card-width;
+}

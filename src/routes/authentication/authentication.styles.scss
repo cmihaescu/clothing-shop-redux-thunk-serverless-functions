@@ -1,21 +1,14 @@
 @import "../../utils/variables";
 
 .authentication-container-for-user-login {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(calc($tablet-breakpoint/2 - 51px), 1fr)
-  );
-  gap: 16px;
+  display: flex;
+  min-width: $min-card-width;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 3rem;
 }
 .authentication-container-for-loged-in-user,
 .authentication-container-for-user-login {
   margin: 10% auto;
   font-size: 1.2rem;
-}
-
-@media (max-width: $tablet-breakpoint) {
-  .authentication-container-for-user-login {
-    justify-items: center;
-  }
 }
