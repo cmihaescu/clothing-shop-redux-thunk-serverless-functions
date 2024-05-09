@@ -12,11 +12,10 @@
   }
 
   .preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 0.8fr));
-    justify-content: center;
-    align-content: center;
-    min-width: $min-card-width;
-    column-gap: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 1% auto;
   }
 }

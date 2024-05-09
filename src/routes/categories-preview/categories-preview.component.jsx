@@ -1,13 +1,13 @@
-import { Fragment } from "react";
 import { CategoryPreview } from "../../components/category-preview/category-preview.component";
 import { useSelector } from "react-redux";
 import { selectCategoriesMap } from "../../store/categories/category-selectors";
+import "./categories-preview.styles.scss";
 
 const CategoriesPreview = () => {
   const categoriesMap = useSelector(selectCategoriesMap);
 
   return (
-    <Fragment>
+    <div className="categories-preview-container">
       {Object.keys(categoriesMap).map((title, i) => (
         <CategoryPreview
           key={i}
@@ -15,7 +15,7 @@ const CategoriesPreview = () => {
           products={categoriesMap[title]}
         />
       ))}
-    </Fragment>
+    </div>
   );
 };
 

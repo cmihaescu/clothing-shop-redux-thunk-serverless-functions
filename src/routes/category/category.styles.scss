@@ -1,13 +1,11 @@
 @import "../../utils/variables";
 
 .category-div {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 0.8fr));
+  display: flex;
+  flex-flow: row wrap;
   justify-content: center;
-  align-content: center;
   min-width: $min-card-width;
-  column-gap: 20px;
-  row-gap: 50px;
+  gap: 1rem;
 }
 
 .category-title {
