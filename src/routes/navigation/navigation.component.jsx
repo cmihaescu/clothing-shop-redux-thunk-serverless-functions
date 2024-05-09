@@ -33,11 +33,12 @@ const Navigation = () => {
   const handleMobileMenuIconClick = () => {
     dispatch(setMobileNavigationDropdown(!mobileNavigationDropdown));
   };
+  const mobileBreakpoint = parseInt(scssVariables.mobileBreakpoint, 10);
   return (
     <Fragment>
       <div className="navigation">
         <Link className="logo-container" to="/">
-          {window.innerWidth < parseInt(scssVariables.mobileBreakpoint, 10) ? (
+          {window.innerWidth < mobileBreakpoint ? (
             <img src={RLogo} alt="r-logo" className="r-logo" />
           ) : (
             <img

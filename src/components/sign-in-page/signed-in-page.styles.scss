@@ -1,5 +1,7 @@
+@import "../../utils/variables";
 .signed-in-page {
   width: 100%;
+  min-width: $min-card-width;
   & > h1 {
     text-align: center;
   }

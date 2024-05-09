@@ -3,6 +3,7 @@
 .navigation {
   height: 70px;
   width: 100%;
+  min-width: $min-card-width;
   display: flex;
   justify-content: space-around;
   margin-bottom: 25px;

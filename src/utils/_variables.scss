@@ -1,9 +1,11 @@
 $tablet-breakpoint: 826px;
 $mobile-breakpoint: 415px;
 $min-card-width: 314px;
+$checkout-smaller-ui-breakpoint: 700px;
 
 :export {
   tabletBreakpoint: $tablet-breakpoint;
   mobileBreakpoint: $mobile-breakpoint;
   minCardWidth: $min-card-width;
+  checkoutSmallerUIBreakpoint: $checkout-smaller-ui-breakpoint;
 }
