@@ -12,6 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 150px;
   }
 
   .revolut-logo {
@@ -66,5 +67,14 @@
 
   .nav-links-container {
     display: none !important;
+  }
+  .logo-container {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .logo-container {
+    max-width: 75px;
   }
 }
