@@ -73,7 +73,7 @@ const Navigation = () => {
         <div className="cart-and-currency-container">
           <CurrencySwitcher />
           <CartIcon />
-          <div className="mobile-navigation-menu">
+          <div id={"mobile-menu-icon-div"} className="mobile-navigation-menu">
             <img
               onClick={handleMobileMenuIconClick}
               src={MenuIcon}
