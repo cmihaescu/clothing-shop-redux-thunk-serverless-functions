@@ -9,6 +9,11 @@
 }
 .authentication-container-for-loged-in-user,
 .authentication-container-for-user-login {
-  margin: 10% auto;
   font-size: 1.2rem;
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .authentication-container-for-user-login {
+    justify-content: space-between;
+  }
 }
