@@ -22,7 +22,10 @@ const MobileNavigationMenu = () => {
     dispatch(setMobileNavigationDropdown(false));
   };
   return (
-    <div className="mobile-navigation-menu">
+    <div
+      id="mobile-navigation-menu-dropdown"
+      className="mobile-navigation-menu"
+    >
       <div className="nav-links-mobile-container">
         <Link className="nav-link" to="/" onClick={handleMobileNavLinkClick}>
           Categories
