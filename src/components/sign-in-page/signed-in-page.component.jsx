@@ -41,7 +41,7 @@ const SignedInPage = () => {
           <p>Name: {displayName}</p>
         </div>
         <div className="account-orders">
-          <Button onClick={handleRetrieveOrders}>
+          <Button buttonType="inverted" onClick={handleRetrieveOrders}>
             {showOrders ? "hide" : "show"} my completed orders
           </Button>
           {showOrders && (
@@ -74,7 +74,7 @@ const SignedInPage = () => {
             </ol>
           )}
 
-          <Button onClick={handleRetrieveSavedCards}>
+          <Button buttonType="inverted" onClick={handleRetrieveSavedCards}>
             {showSavedCards ? "hide" : "show"} my saved cards
           </Button>
         </div>
