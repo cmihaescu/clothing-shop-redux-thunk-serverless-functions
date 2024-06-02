@@ -56,6 +56,12 @@ export const handler = async (event) => {
         data: body,
       };
       break;
+    case "retrieve_customer_payment_methods":
+      config = {
+        ...config,
+        url: `https://sandbox-merchant.revolut.com/api/1.0/customers/${body.revolutCustomerId}/payment-methods`,
+      };
+      break;
     default:
       console.log("API action scenario not available");
   }

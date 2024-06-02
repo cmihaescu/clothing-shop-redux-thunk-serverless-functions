@@ -10,7 +10,8 @@ import "./sign-in-form.styles.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../store/user/user-actions";
-import { apiClientRevolut } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolut-API.utils";
+import { CREATE_CUSTOMER } from "../../utils/revolut-API-constants.utils";
 
 const initialFormField = {
   email: "",
@@ -69,7 +70,7 @@ const SignInForm = () => {
       let revolutCustomer = await apiClientRevolut(
         "POST",
         { email, full_name: displayName },
-        "create_customer"
+        CREATE_CUSTOMER
       );
       createUserDocumentFromAuth(googleUser.user, {
         displayName,

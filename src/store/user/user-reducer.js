@@ -3,8 +3,6 @@ const { SET_CURRENT_USER } = USER_ACTION_TYPES;
 
 const INITIAL_STATE = {
   currentUser: null,
-  revolutCustomerId: "",
-  revolutSavedCards: [],
 };
 
 export const userReducer = (state = INITIAL_STATE, action) => {

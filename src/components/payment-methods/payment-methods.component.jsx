@@ -1,16 +1,23 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../button/button.component";
 import RevolutCheckout from "@revolut/checkout";
 import { createOrderIdAsync } from "../../store/cart/cart-actions";
 import { useEffect, useState } from "react";
+import { selectCurrentUser } from "../../store/user/user-selector";
 import "./payment-methods.styles.scss";
 
 const PaymentMethods = ({ orderDetails }) => {
   const dispatch = useDispatch();
   const [saveCardForPopup, setSaveCardForPopup] = useState(false);
   const baseURL = window.location.origin;
-
+  const signedInUser = useSelector(selectCurrentUser);
   let { amount, currency } = orderDetails;
+  if (signedInUser) {
+    orderDetails = {
+      ...orderDetails,
+      customer: { id: signedInUser?.revolutCustomerId },
+    };
+  }
 
   const handlePayWithPopup = async (orderDetails) => {
     let order = await dispatch(createOrderIdAsync(orderDetails));
@@ -23,6 +30,8 @@ const PaymentMethods = ({ orderDetails }) => {
           window.location.replace(`${baseURL}/failure`);
         },
         savePaymentMethodFor: saveCardForPopup ? "customer" : false,
+        email: signedInUser ? signedInUser?.email : null,
+        name: signedInUser ? signedInUser?.displayName : null,
       });
     });
   };
@@ -77,15 +86,17 @@ const PaymentMethods = ({ orderDetails }) => {
         <Button onClick={() => handlePayWithPopup(orderDetails)}>
           Pay with a new card
         </Button>
-        <div className="save-card-checkbox">
-          <input
-            onChange={(e) => handleSaveCardForPopupCheck(e)}
-            for="pop-up-save-card"
-            type="checkbox"
-            id="pop-up-save-card"
-          />
-          <label>Save this card for future payments?</label>
-        </div>
+        {signedInUser && (
+          <div className="save-card-checkbox">
+            <input
+              onChange={(e) => handleSaveCardForPopupCheck(e)}
+              for="pop-up-save-card"
+              type="checkbox"
+              id="pop-up-save-card"
+            />
+            <label>Save this card for future payments?</label>
+          </div>
+        )}
       </div>
       <Button>Pay with a saved card</Button>
       <div id="revolutPay"></div>

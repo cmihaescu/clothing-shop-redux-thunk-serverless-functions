@@ -8,7 +8,8 @@ import Button from "../button/button.component";
 import "./sign-up-form.styles.scss";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../store/user/user-actions";
-import { apiClientRevolut } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolut-API.utils";
+import { CREATE_CUSTOMER } from "../../utils/revolut-API-constants.utils";
 
 const defaultFormFields = {
   displayName: "",
@@ -45,7 +46,7 @@ const SignUpForm = () => {
       let revolutCustomer = await apiClientRevolut(
         "POST",
         { email, full_name: displayName },
-        "create_customer"
+        CREATE_CUSTOMER
       );
       dispatch(
         setCurrentUser({
