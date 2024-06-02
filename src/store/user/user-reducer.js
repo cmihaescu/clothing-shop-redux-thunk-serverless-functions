@@ -1,21 +1,22 @@
-import { USER_ACTION_TYPES } from "./user-types"
-const {SET_CURRENT_USER} = USER_ACTION_TYPES
+import { USER_ACTION_TYPES } from "./user-types";
+const { SET_CURRENT_USER } = USER_ACTION_TYPES;
 
 const INITIAL_STATE = {
-    currentUser:null
-}
+  currentUser: null,
+  revolutCustomerId: "",
+  revolutSavedCards: [],
+};
 
-export const userReducer = (state=INITIAL_STATE, action) => {
-const {type, payload} = action
+export const userReducer = (state = INITIAL_STATE, action) => {
+  const { type, payload } = action;
 
-switch(type) {
+  switch (type) {
     case SET_CURRENT_USER:
-        return {
-            ...state,
-            currentUser:payload
-            }
+      return {
+        ...state,
+        currentUser: payload,
+      };
     default:
-        return state;
-    }
-}
-
+      return state;
+  }
+};

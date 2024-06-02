@@ -3,11 +3,14 @@ import FormInput from "../form-input/form-input.component";
 import {
   signInWithGooglePopup,
   signInWithEmailAndPasswordMethod,
+  createUserDocumentFromAuth,
+  getUserFromFirebase,
 } from "../../utils/firebase.utils";
 import "./sign-in-form.styles.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../store/user/user-actions";
+import { apiClientRevolut } from "../../utils/revolutAPI.utils";
 
 const initialFormField = {
   email: "",
@@ -49,7 +52,43 @@ const SignInForm = () => {
 
   const signInWithGoogle = async () => {
     const googleUser = await signInWithGooglePopup();
-    dispatch(setCurrentUser(googleUser.user));
+    const { email, displayName, uid } = googleUser.user;
+    let firebaseGoogleUser = await getUserFromFirebase(uid)
+      .then((user) => {
+        return user;
+      })
+      .catch((error) =>
+        console.error(
+          "There was an error in retrieving user from firebase",
+          error
+        )
+      );
+    console.log("user retrieved from firebase", firebaseGoogleUser);
+    if (!firebaseGoogleUser) {
+      console.log("there is no firebase user");
+      let revolutCustomer = await apiClientRevolut(
+        "POST",
+        { email, full_name: displayName },
+        "create_customer"
+      );
+      createUserDocumentFromAuth(googleUser.user, {
+        displayName,
+        revolutCustomerId: revolutCustomer.id,
+      });
+      googleUser.user.revolutCustomerId = revolutCustomer.id;
+      dispatch(setCurrentUser(googleUser.user));
+    } else {
+      console.log("there is a firebase user");
+      firebaseGoogleUser.revolutCustomerId =
+        firebaseGoogleUser.revolutCustomerId.stringValue;
+      firebaseGoogleUser.createdAt =
+        firebaseGoogleUser.createdAt.timestampValue;
+      firebaseGoogleUser.displayName =
+        firebaseGoogleUser.displayName.stringValue;
+      firebaseGoogleUser.email = firebaseGoogleUser.email.stringValue;
+      //this needs to be redone ^^ - most likely change the retrive method from firebase db or create a formatting function
+      dispatch(setCurrentUser(firebaseGoogleUser));
+    }
   };
 
   return (

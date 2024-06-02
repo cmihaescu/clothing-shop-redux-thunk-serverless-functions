@@ -6,14 +6,6 @@ const { REVOLUT_SK_SANDBOX } = process.env;
 export const handler = async (event) => {
   console.log("revolut endpoint hit with", JSON.parse(event.body));
 
-  const objectToQueryString = (obj) => {
-    const keys = Object.keys(obj);
-    const keyValuePairs = keys.map((key) => {
-      return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
-    });
-    return keyValuePairs.join("&");
-  };
-
   let { body, method, apiAction } = JSON.parse(event.body);
   let config = {
     method,
@@ -24,6 +16,14 @@ export const handler = async (event) => {
       "Revolut-Api-Version": "2023-09-01",
     },
   };
+  const objectToQueryString = (obj) => {
+    const keys = Object.keys(obj);
+    const keyValuePairs = keys.map((key) => {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
+    });
+    return keyValuePairs.join("&");
+  };
+
   switch (apiAction) {
     case "create_order":
       config = {
@@ -47,6 +47,13 @@ export const handler = async (event) => {
       config = {
         ...config,
         url,
+      };
+      break;
+    case "create_customer":
+      config = {
+        ...config,
+        url: "https://sandbox-merchant.revolut.com/api/1.0/customers",
+        data: body,
       };
       break;
     default:

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolutAPI.utils";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../store/cart/cart-actions";
 import { Link, useLocation } from "react-router-dom";
@@ -18,7 +18,7 @@ export const OrderConfirmationPage = ({ orderId }) => {
   const failureParagraph = `${queryFailureMessage}Order ID is ${orderId}. Your cart has not been cleared in case you wish to try with another card`;
 
   const fetchOrder = async () => {
-    let order = await apiClientRevolutOrders("get", orderId, "retrieve_order");
+    let order = await apiClientRevolut("get", orderId, "retrieve_order");
     return order;
   };
   useEffect(() => {
@@ -34,7 +34,7 @@ export const OrderConfirmationPage = ({ orderId }) => {
           setOrderSuccess(false);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   });
 
   return (
