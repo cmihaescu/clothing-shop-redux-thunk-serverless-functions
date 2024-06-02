@@ -1,13 +1,14 @@
+@import "../../utils/variables";
+
 .product-card-container {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  height: 350px;
+  margin-bottom: 2rem;
   align-items: center;
   position: relative;
 
   img {
-    width: 100%;
+    width: $min-card-width;
     height: 95%;
     object-fit: cover;
     margin-bottom: 5px;

@@ -1,21 +1,28 @@
+@import "../../utils/variables";
+
 .navigation {
   height: 70px;
   width: 100%;
+  min-width: $min-card-width;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 25px;
 
   .logo-container {
-    height: 100%;
-    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .logo {
-    width: 100%;
-    height: auto;
+  .revolut-logo {
+    width: 150px;
+  }
+  .r-logo {
+    min-width: 50px;
+    max-width: 75px;
+  }
+  .mobile-navigation-menu {
+    display: none;
   }
 
   .nav-links-container {
@@ -37,5 +44,36 @@
         color: #fff;
       }
     }
+  }
+
+  .cart-and-currency-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    & img {
+      width: 70px;
+    }
+  }
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .navigation {
+    justify-content: space-between;
+  }
+  .mobile-navigation-menu {
+    display: inline-block !important;
+  }
+
+  .nav-links-container {
+    display: none !important;
+  }
+  .logo-container {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .logo-container {
+    max-width: 75px;
   }
 }

@@ -9,7 +9,13 @@ import { selectCurrentUser } from "../../store/user/user-selector";
 const Authentication = () => {
   const currentUser = useSelector(selectCurrentUser);
   return (
-    <div className="authentication-container">
+    <div
+      className={
+        currentUser
+          ? "authentication-container-for-loged-in-user"
+          : "authentication-container-for-user-login"
+      }
+    >
       {currentUser ? (
         <SignedInPage />
       ) : (

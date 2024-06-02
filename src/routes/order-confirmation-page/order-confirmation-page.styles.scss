@@ -1,3 +1,5 @@
+@import "../../utils/variables";
+
 .confirmation-page-content {
   display: flex;
   flex-direction: column;
@@ -5,9 +7,10 @@
   align-items: center;
   height: 50vh;
   width: 75%;
-  font-size: 2rem;
+  font-size: 1.2rem;
   margin: 0 auto;
   text-align: justify;
+  min-width: $min-card-width;
 }
 
 .shop-some-more-btn {

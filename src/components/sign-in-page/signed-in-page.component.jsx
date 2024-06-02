@@ -33,7 +33,7 @@ const SignedInPage = () => {
   const handleRetrieveSavedCards = () => {};
 
   return (
-    <div className="SignedInPage">
+    <div className="signed-in-page">
       <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1>
       <div className="account-container">
         <div className="account-details">
