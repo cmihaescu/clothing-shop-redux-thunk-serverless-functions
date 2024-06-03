@@ -1,7 +1,8 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user-selector";
+import { setCurrentUser } from "../../store/user/user-actions";
 import { apiClientRevolut } from "../../utils/revolut-API.utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button/button.component";
 import { Link } from "react-router-dom";
 import { RETRIEVE_ORDER_LIST } from "../../utils/revolut-API-constants.utils";
@@ -13,10 +14,16 @@ const SignedInPage = () => {
   const [showOrders, setShowOrders] = useState(false);
   const [savedCards, setSavedCards] = useState(false);
   const [showSavedCards, setshowSavedCards] = useState(false);
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   let { email, displayName, revolutCustomerId } = currentUser;
   displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
   let firstName = displayName.split(" ")[0];
+
+  useEffect(() => {
+    handleRetrieveOrders();
+    handleRetrieveSavedCards();
+  }, []);
 
   const handleRetrieveOrders = async () => {
     try {
@@ -26,10 +33,13 @@ const SignedInPage = () => {
         RETRIEVE_ORDER_LIST
       );
       setOrders(ordersList);
-      setShowOrders(!showOrders);
     } catch (error) {
       console.error("There was a problem retrieving the orders list: ", error);
     }
+  };
+
+  const handleRetrieveOrdersButtonClick = () => {
+    setShowOrders(!showOrders);
   };
 
   const handleRetrieveSavedCards = async () => {
@@ -39,15 +49,30 @@ const SignedInPage = () => {
         { revolutCustomerId },
         RETRIEVE_CUSTOMER_PAYMENT_METHODS
       );
-      console.log("savedCards", savedCards);
-      setSavedCards(savedCards);
-      setshowSavedCards(!showSavedCards);
+      const mappedSavedCards = savedCards.map((savedCard, i) => {
+        let { last4, brand, cardholder_name, expiry_month, expiry_year } =
+          savedCard.method_details;
+        let { id } = savedCard;
+        return { id, last4, brand, cardholder_name, expiry_month, expiry_year };
+      });
+
+      dispatch(
+        setCurrentUser({
+          ...currentUser,
+          savedPaymentMethods: mappedSavedCards,
+        })
+      );
+      setSavedCards(mappedSavedCards);
     } catch (err) {
       console.error(
         "There was a problem retrieving the payment methods list: ",
         err
       );
     }
+  };
+
+  const handleRetrieveSavedCardsButtonClick = () => {
+    setshowSavedCards(!showSavedCards);
   };
 
   return (
@@ -60,12 +85,15 @@ const SignedInPage = () => {
         </div>
         <div className="account-features">
           <div className="orders">
-            <Button buttonType="inverted" onClick={handleRetrieveOrders}>
+            <Button
+              buttonType="inverted"
+              onClick={handleRetrieveOrdersButtonClick}
+            >
               my completed orders
             </Button>
             {showOrders && (
               <ol>
-                {orders.length < 1 ? (
+                {orders?.length < 1 ? (
                   <>
                     <p>You have no completed orders yet. </p>
                     <Link className="go-to-shop-link" to="/shop">
@@ -95,12 +123,15 @@ const SignedInPage = () => {
             )}
           </div>
           <div className="saved-cards">
-            <Button buttonType="inverted" onClick={handleRetrieveSavedCards}>
+            <Button
+              buttonType="inverted"
+              onClick={handleRetrieveSavedCardsButtonClick}
+            >
               my saved cards
             </Button>
             {showSavedCards && (
               <div>
-                {savedCards.length < 1 ? (
+                {savedCards?.length < 1 ? (
                   <>
                     <p>You have no saved cards yet. Want to add one? </p>
                   </>
@@ -112,7 +143,7 @@ const SignedInPage = () => {
                       cardholder_name,
                       expiry_month,
                       expiry_year,
-                    } = savedCard.method_details;
+                    } = savedCard;
                     return (
                       <div key={i} className="saved-card">
                         <span className="card-brand">{brand}</span>

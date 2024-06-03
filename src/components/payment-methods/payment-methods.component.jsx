@@ -9,6 +9,7 @@ import "./payment-methods.styles.scss";
 const PaymentMethods = ({ orderDetails }) => {
   const dispatch = useDispatch();
   const [saveCardForPopup, setSaveCardForPopup] = useState(false);
+  const [showSavedCards, setshowSavedCards] = useState(false);
   const baseURL = window.location.origin;
   const signedInUser = useSelector(selectCurrentUser);
   let { amount, currency } = orderDetails;
@@ -38,6 +39,10 @@ const PaymentMethods = ({ orderDetails }) => {
 
   const handleSaveCardForPopupCheck = (e) => {
     setSaveCardForPopup(e.target.checked);
+  };
+
+  const handlePayWithASavedCard = () => {
+    setshowSavedCards(!showSavedCards);
   };
 
   useEffect(() => {
@@ -84,7 +89,7 @@ const PaymentMethods = ({ orderDetails }) => {
     <div className="payment-methods">
       <div className="pay-wtih-popup-container">
         <Button onClick={() => handlePayWithPopup(orderDetails)}>
-          Pay with a new card
+          {signedInUser ? "Pay with a new card" : "Pay with card"}
         </Button>
         {signedInUser && (
           <div className="save-card-checkbox">
@@ -98,7 +103,26 @@ const PaymentMethods = ({ orderDetails }) => {
           </div>
         )}
       </div>
-      <Button>Pay with a saved card</Button>
+      {signedInUser && (
+        <Button onClick={handlePayWithASavedCard}>Pay with a saved card</Button>
+      )}
+      {showSavedCards &&
+        signedInUser?.savedPaymentMethods.map((savedCard, i) => {
+          let { last4, brand, cardholder_name, expiry_month, expiry_year } =
+            savedCard;
+          return (
+            <div key={i} className="saved-card">
+              <span className="card-brand">{brand}</span>
+              <p>XXXX-XXXX-XXXX-{last4}</p>
+              <span className="expiry-date-and-cardholder-name">
+                <p>
+                  {expiry_month}/{expiry_year.toString().slice(2)}
+                </p>
+                <p>{cardholder_name}</p>
+              </span>
+            </div>
+          );
+        })}
       <div id="revolutPay"></div>
     </div>
   );

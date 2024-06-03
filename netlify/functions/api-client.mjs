@@ -1,10 +1,19 @@
+import apiClientConstants from "./api-client-constants.mjs";
 const axios = require("axios");
 require("dotenv").config();
 
 const { REVOLUT_SK_SANDBOX } = process.env;
 
 export const handler = async (event) => {
+  const {
+    CREATE_ORDER,
+    RETRIEVE_ORDER,
+    RETRIEVE_ORDER_LIST,
+    CREATE_CUSTOMER,
+    RETRIEVE_CUSTOMER_PAYMENT_METHODS,
+  } = apiClientConstants;
   console.log("revolut endpoint hit with", JSON.parse(event.body));
+  console.log("actionConstants", apiClientConstants);
 
   let { body, method, apiAction } = JSON.parse(event.body);
   let config = {
@@ -25,20 +34,20 @@ export const handler = async (event) => {
   };
 
   switch (apiAction) {
-    case "create_order":
+    case CREATE_ORDER:
       config = {
         ...config,
         url: "https://sandbox-merchant.revolut.com/api/orders",
         data: body,
       };
       break;
-    case "retrieve_order":
+    case RETRIEVE_ORDER:
       config = {
         ...config,
         url: "https://sandbox-merchant.revolut.com/api/orders/" + body,
       };
       break;
-    case "retrieve_order_list":
+    case RETRIEVE_ORDER_LIST:
       let url = "https://sandbox-merchant.revolut.com/api/1.0/orders";
       if (Object.keys(body).length) {
         let queryParams = "?" + objectToQueryString(body);
@@ -49,14 +58,14 @@ export const handler = async (event) => {
         url,
       };
       break;
-    case "create_customer":
+    case CREATE_CUSTOMER:
       config = {
         ...config,
         url: "https://sandbox-merchant.revolut.com/api/1.0/customers",
         data: body,
       };
       break;
-    case "retrieve_customer_payment_methods":
+    case RETRIEVE_CUSTOMER_PAYMENT_METHODS:
       config = {
         ...config,
         url: `https://sandbox-merchant.revolut.com/api/1.0/customers/${body.revolutCustomerId}/payment-methods`,
