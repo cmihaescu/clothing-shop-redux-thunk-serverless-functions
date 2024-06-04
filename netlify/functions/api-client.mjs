@@ -12,6 +12,7 @@ export const handler = async (event) => {
     CREATE_CUSTOMER,
     RETRIEVE_CUSTOMER_PAYMENT_METHODS,
     PAY_FOR_AN_ORDER,
+    DELETE_SAVED_PAYMENT_METHOD,
   } = apiClientConstants;
   console.log("revolut endpoint hit with", JSON.parse(event.body));
 
@@ -92,6 +93,12 @@ export const handler = async (event) => {
             },
           },
         },
+      };
+      break;
+    case DELETE_SAVED_PAYMENT_METHOD:
+      config = {
+        ...config,
+        url: `https://sandbox-merchant.revolut.com/api/1.0/customers/${body.revolutCustomerId}/payment-methods/${body.paymentMethodId}`,
       };
       break;
     default:

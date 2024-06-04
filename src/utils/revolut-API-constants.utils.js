@@ -5,3 +5,4 @@ export const CREATE_CUSTOMER = "create_customer";
 export const RETRIEVE_CUSTOMER_PAYMENT_METHODS =
   "retrieve_customer_payment_methods";
 export const PAY_FOR_AN_ORDER = "pay_for_an_order";
+export const DELETE_SAVED_PAYMENT_METHOD = "delete_saved_saved_payment method";

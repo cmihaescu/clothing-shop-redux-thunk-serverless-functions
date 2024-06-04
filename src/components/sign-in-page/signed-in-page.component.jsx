@@ -1,12 +1,16 @@
 import { useSelector, useDispatch } from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { selectCurrentUser } from "../../store/user/user-selector";
 import { setCurrentUser } from "../../store/user/user-actions";
 import { apiClientRevolut } from "../../utils/revolut-API.utils";
 import { useEffect, useState } from "react";
 import Button from "../button/button.component";
 import { Link } from "react-router-dom";
-import { RETRIEVE_ORDER_LIST } from "../../utils/revolut-API-constants.utils";
-import { RETRIEVE_CUSTOMER_PAYMENT_METHODS } from "../../utils/revolut-API-constants.utils";
+import {
+  RETRIEVE_ORDER_LIST,
+  RETRIEVE_CUSTOMER_PAYMENT_METHODS,
+  DELETE_SAVED_PAYMENT_METHOD,
+} from "../../utils/revolut-API-constants.utils";
 import "./signed-in-page.styles.scss";
 
 const SignedInPage = () => {
@@ -74,7 +78,18 @@ const SignedInPage = () => {
   const handleRetrieveSavedCardsButtonClick = () => {
     setshowSavedCards(!showSavedCards);
   };
-
+  const handleDeleteSavedCard = async (paymentMethodId) => {
+    try {
+      await apiClientRevolut(
+        "DELETE",
+        { revolutCustomerId, paymentMethodId },
+        DELETE_SAVED_PAYMENT_METHOD
+      );
+      await handleRetrieveSavedCards();
+    } catch (error) {
+      console.error("There was a problem deleting the saved card: ", error);
+    }
+  };
   return (
     <div className="signed-in-page">
       <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1>
@@ -138,6 +153,7 @@ const SignedInPage = () => {
                 ) : (
                   savedCards.map((savedCard, i) => {
                     let {
+                      id,
                       last4,
                       brand,
                       cardholder_name,
@@ -146,7 +162,13 @@ const SignedInPage = () => {
                     } = savedCard;
                     return (
                       <div key={i} className="saved-card">
-                        <span className="card-brand">{brand}</span>
+                        <div className="brand-and-delete-icon">
+                          <span className="card-brand">{brand}</span>
+                          <DeleteIcon
+                            onClick={() => handleDeleteSavedCard(id)}
+                            className="svg-icon svg-icon__trashcan"
+                          />
+                        </div>
                         <p>XXXX-XXXX-XXXX-{last4}</p>
                         <span className="expiry-date-and-cardholder-name">
                           <p>
