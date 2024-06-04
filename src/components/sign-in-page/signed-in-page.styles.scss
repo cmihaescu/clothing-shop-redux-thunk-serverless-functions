@@ -5,12 +5,14 @@
   & > h1 {
     text-align: center;
   }
-
   .account-container {
+    align-items: flex-start;
+  }
+  .account-container,
+  .account-features {
     width: 100%;
     display: flex;
     flex-flow: row wrap;
-    align-items: flex-start;
     justify-content: space-evenly;
   }
 }
@@ -22,4 +24,43 @@ ol {
 
 .go-to-shop-link:hover {
   font-size: 1.4rem;
+}
+
+.saved-card {
+  background: rgb(9, 125, 120);
+  background: linear-gradient(
+    90deg,
+    rgba(9, 125, 120, 1) 39%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  .brand-and-delete-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .card-brand {
+      font-size: 1.2rem;
+    }
+  }
+  .expiry-date-and-cardholder-name {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.account-features {
+  gap: 1rem;
+}
+.account-features button,
+.saved-card,
+.saved-cards,
+.orders {
+  width: 250px;
 }

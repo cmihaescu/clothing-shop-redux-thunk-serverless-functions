@@ -1,6 +1,10 @@
 import { CART_ACTION_TYPES } from "./cart-types";
 import { createAction } from "../../utils/reducer.utils";
-import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolut-API.utils";
+import {
+  CREATE_ORDER,
+  PAY_FOR_AN_ORDER,
+} from "../../utils/revolut-API-constants.utils";
 
 const {
   SET_CURRENCY,
@@ -10,6 +14,9 @@ const {
   UPDATE_ORDER_ID_START,
   UPDATE_ORDER_ID_SUCCESS,
   UPDATE_ORDER_ID_FAILURE,
+  PAY_WITH_SAVED_METHOD_START,
+  PAY_WITH_SAVED_METHOD_SUCCESS,
+  PAY_WITH_SAVED_METHOD_FAILURE,
   CLEAR_CART,
 } = CART_ACTION_TYPES;
 
@@ -43,14 +50,38 @@ export const updateCartOrderIdFailure = (error) =>
 export const createOrderIdAsync = (order_details) => async (dispatch) => {
   dispatch(updateCartOrderIdStart());
   try {
-    const order = await apiClientRevolutOrders(
-      "post",
-      order_details,
-      "create_order"
-    );
+    const order = await apiClientRevolut("post", order_details, CREATE_ORDER);
     dispatch(updateCartOrderIdSuccess(order.id));
     return order;
   } catch (error) {
     dispatch(updateCartOrderIdFailure(error));
   }
 };
+
+export const payWithSavedPaymentMethodStart = () =>
+  createAction(PAY_WITH_SAVED_METHOD_START);
+
+export const payWithSavedPaymentMethodSuccess = (payment_id) =>
+  createAction(PAY_WITH_SAVED_METHOD_SUCCESS, payment_id);
+export const payWithSavedPaymentMethodFailure = (error) =>
+  createAction(PAY_WITH_SAVED_METHOD_FAILURE, error);
+
+//redux thunk async
+export const payWithSavedPaymentMethodAsync =
+  (order_details) => async (dispatch) => {
+    dispatch(payWithSavedPaymentMethodStart());
+    try {
+      const payment = await apiClientRevolut(
+        "post",
+        order_details,
+        PAY_FOR_AN_ORDER
+      );
+      await dispatch(payWithSavedPaymentMethodSuccess(payment.id));
+      window.location.replace(`${window.location.origin}/success`);
+    } catch (error) {
+      dispatch(payWithSavedPaymentMethodFailure());
+      console.log(
+        "There was something wrong with the payment request. Error is: " + error
+      );
+    }
+  };

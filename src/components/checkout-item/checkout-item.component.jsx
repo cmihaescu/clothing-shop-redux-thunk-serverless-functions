@@ -32,12 +32,12 @@ export const CheckoutItem = ({ product }) => {
       <div className="quantity-container">
         <ArrowBackIosIcon
           onClick={handleAmountDecrease}
-          className="quantity-svg"
+          className="svg-icon svg-icon__quantity"
         />
         <span>{quantity}</span>
         <ArrowForwardIosIcon
           onClick={handleAmountIncrease}
-          className="quantity-svg"
+          className="svg-icon svg-icon__quantity"
         />
       </div>
       <span>
