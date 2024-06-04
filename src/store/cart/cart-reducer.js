@@ -8,6 +8,9 @@ const {
   UPDATE_ORDER_ID_START,
   UPDATE_ORDER_ID_SUCCESS,
   UPDATE_ORDER_ID_FAILURE,
+  PAY_WITH_SAVED_METHOD_START,
+  PAY_WITH_SAVED_METHOD_SUCCESS,
+  PAY_WITH_SAVED_METHOD_FAILURE,
   CLEAR_CART,
 } = CART_ACTION_TYPES;
 
@@ -20,6 +23,8 @@ export const CART_INITIAL_STATE = {
   currency: "EUR",
   order_id: "",
   creatingOrder: false,
+  payment_id: "",
+  payingWithSavedMethod: false,
 };
 
 export const cartReducer = (state = CART_INITIAL_STATE, action = {}) => {
@@ -65,9 +70,26 @@ export const cartReducer = (state = CART_INITIAL_STATE, action = {}) => {
         ...state,
         creatingOrder: false,
       };
+    case PAY_WITH_SAVED_METHOD_START:
+      return {
+        ...state,
+        payingWithSavedMethod: true,
+      };
+    case PAY_WITH_SAVED_METHOD_SUCCESS:
+      return {
+        ...state,
+        payment_id: payload,
+        payingWithSavedMethod: false,
+      };
+    case PAY_WITH_SAVED_METHOD_FAILURE:
+      return {
+        ...state,
+        payingWithSavedMethod: false,
+      };
     case CLEAR_CART:
       return {
         ...state,
+        order_id: "",
         cartItems: [],
         totalItems: 0,
         totalPrice: 0,

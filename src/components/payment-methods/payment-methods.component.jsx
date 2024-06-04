@@ -1,10 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../button/button.component";
 import RevolutCheckout from "@revolut/checkout";
-import { createOrderIdAsync } from "../../store/cart/cart-actions";
+import {
+  createOrderIdAsync,
+  payWithSavedPaymentMethodAsync,
+} from "../../store/cart/cart-actions";
 import { useEffect, useState } from "react";
 import { selectCurrentUser } from "../../store/user/user-selector";
 import "./payment-methods.styles.scss";
+import { cartOrderId } from "../../store/cart/cart-selectors";
 
 const PaymentMethods = ({ orderDetails }) => {
   const dispatch = useDispatch();
@@ -12,6 +16,7 @@ const PaymentMethods = ({ orderDetails }) => {
   const [showSavedCards, setshowSavedCards] = useState(false);
   const baseURL = window.location.origin;
   const signedInUser = useSelector(selectCurrentUser);
+  const reduxOrderId = useSelector(cartOrderId);
   let { amount, currency } = orderDetails;
   if (signedInUser) {
     orderDetails = {
@@ -19,6 +24,36 @@ const PaymentMethods = ({ orderDetails }) => {
       customer: { id: signedInUser?.revolutCustomerId },
     };
   }
+
+  const handleSaveCardForPopupCheck = (e) => {
+    setSaveCardForPopup(e.target.checked);
+  };
+
+  const handlePayWithASavedCard = () => {
+    setshowSavedCards(!showSavedCards);
+  };
+
+  const handleSelectSavedCardToPay = async (paymentMethodId) => {
+    if (reduxOrderId.length) {
+      let orderId = reduxOrderId;
+      await dispatch(
+        payWithSavedPaymentMethodAsync({
+          ...orderDetails,
+          paymentMethodId,
+          orderId,
+        })
+      );
+    } else {
+      let orderId = await dispatch(createOrderIdAsync(orderDetails));
+      await dispatch(
+        payWithSavedPaymentMethodAsync({
+          ...orderDetails,
+          paymentMethodId,
+          orderId: orderId.id,
+        })
+      );
+    }
+  };
 
   const handlePayWithPopup = async (orderDetails) => {
     let order = await dispatch(createOrderIdAsync(orderDetails));
@@ -35,14 +70,6 @@ const PaymentMethods = ({ orderDetails }) => {
         name: signedInUser ? signedInUser?.displayName : null,
       });
     });
-  };
-
-  const handleSaveCardForPopupCheck = (e) => {
-    setSaveCardForPopup(e.target.checked);
-  };
-
-  const handlePayWithASavedCard = () => {
-    setshowSavedCards(!showSavedCards);
   };
 
   useEffect(() => {
@@ -95,7 +122,6 @@ const PaymentMethods = ({ orderDetails }) => {
           <div className="save-card-checkbox">
             <input
               onChange={(e) => handleSaveCardForPopupCheck(e)}
-              for="pop-up-save-card"
               type="checkbox"
               id="pop-up-save-card"
             />
@@ -108,18 +134,28 @@ const PaymentMethods = ({ orderDetails }) => {
       )}
       {showSavedCards &&
         signedInUser?.savedPaymentMethods.map((savedCard, i) => {
-          let { last4, brand, cardholder_name, expiry_month, expiry_year } =
-            savedCard;
+          let { id, last4, brand, expiry_month, expiry_year } = savedCard;
           return (
-            <div key={i} className="saved-card">
-              <span className="card-brand">{brand}</span>
-              <p>XXXX-XXXX-XXXX-{last4}</p>
-              <span className="expiry-date-and-cardholder-name">
-                <p>
-                  {expiry_month}/{expiry_year.toString().slice(2)}
-                </p>
-                <p>{cardholder_name}</p>
+            <div
+              onClick={() => handleSelectSavedCardToPay(id)}
+              key={i}
+              className="saved-card-checkout-page"
+            >
+              <span>&#x2022;&#x2022;&#x2022;&#x2022;-{last4}</span>
+              <span>
+                {" " + expiry_month}/{expiry_year.toString().slice(2)}
               </span>
+              {brand === "VISA" ? (
+                <img
+                  src="https://s13emagst.akamaized.net/assets/ro/css/font-icons/flag-icons/visa.svg?v1"
+                  alt="visa-logo"
+                ></img>
+              ) : (
+                <img
+                  src="https://s13emagst.akamaized.net/assets/ro/css/font-icons/flag-icons/mastercard.svg?v1"
+                  alt="mastercard-logo"
+                ></img>
+              )}
             </div>
           );
         })}

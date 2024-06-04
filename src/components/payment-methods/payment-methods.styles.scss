@@ -14,3 +14,28 @@
     padding: 0;
   }
 }
+.saved-card-checkout-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid black;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem !important;
+  & img {
+    background-position: center;
+    background-size: 58px 30px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    padding: 5px;
+    height: 40px;
+    width: 64px;
+  }
+  &:hover {
+    scale: 1.05;
+    cursor: pointer;
+  }
+  &:active {
+    scale: 1;
+  }
+}

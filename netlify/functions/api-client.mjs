@@ -11,9 +11,9 @@ export const handler = async (event) => {
     RETRIEVE_ORDER_LIST,
     CREATE_CUSTOMER,
     RETRIEVE_CUSTOMER_PAYMENT_METHODS,
+    PAY_FOR_AN_ORDER,
   } = apiClientConstants;
   console.log("revolut endpoint hit with", JSON.parse(event.body));
-  console.log("actionConstants", apiClientConstants);
 
   let { body, method, apiAction } = JSON.parse(event.body);
   let config = {
@@ -71,6 +71,29 @@ export const handler = async (event) => {
         url: `https://sandbox-merchant.revolut.com/api/1.0/customers/${body.revolutCustomerId}/payment-methods`,
       };
       break;
+    case PAY_FOR_AN_ORDER:
+      config = {
+        ...config,
+        url: `https://sandbox-merchant.revolut.com/api/orders/${body.orderId}/payments`,
+        data: {
+          saved_payment_method: {
+            type: "card",
+            id: body.paymentMethodId,
+            initiator: "customer",
+            environment: {
+              type: "browser",
+              time_zone_utc_offset: 180,
+              color_depth: 48,
+              screen_width: 1920,
+              screen_height: 1080,
+              java_enabled: true,
+              challenge_window_width: 640,
+              browser_url: "https://business.revolut.com",
+            },
+          },
+        },
+      };
+      break;
     default:
       console.log("API action scenario not available");
   }
@@ -87,7 +110,7 @@ export const handler = async (event) => {
   } catch (error) {
     console.error({ error });
     return {
-      status: 400,
+      statusCode: 400,
       body: JSON.stringify({ error }),
     };
   }

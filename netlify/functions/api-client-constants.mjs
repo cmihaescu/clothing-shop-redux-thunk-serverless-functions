@@ -4,6 +4,7 @@ const apiClientConstants = {
   RETRIEVE_ORDER_LIST: "retrieve_order_list",
   CREATE_CUSTOMER: "create_customer",
   RETRIEVE_CUSTOMER_PAYMENT_METHODS: "retrieve_customer_payment_methods",
+  PAY_FOR_AN_ORDER: "pay_for_an_order",
 };
 
 export default apiClientConstants;
