@@ -11,7 +11,11 @@ import {
   RETRIEVE_CUSTOMER_PAYMENT_METHODS,
   DELETE_SAVED_PAYMENT_METHOD,
 } from "../../utils/revolut-API-constants.utils";
+import RevolutCheckout from "@revolut/checkout";
+
 import "./signed-in-page.styles.scss";
+import { createOrderIdAsync } from "../../store/cart/cart-actions";
+import { currencySelector } from "../../store/cart/cart-selectors";
 
 const SignedInPage = () => {
   const [orders, setOrders] = useState([]);
@@ -20,6 +24,7 @@ const SignedInPage = () => {
   const [showSavedCards, setshowSavedCards] = useState(false);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const currency = useSelector(currencySelector);
   let { email, displayName, revolutCustomerId } = currentUser;
   displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
   let firstName = displayName.split(" ")[0];
@@ -90,6 +95,29 @@ const SignedInPage = () => {
       console.error("There was a problem deleting the saved card: ", error);
     }
   };
+  const handleAddACard = async () => {
+    let order = await dispatch(
+      createOrderIdAsync({
+        amount: 0,
+        currency,
+        customer: { id: revolutCustomerId },
+      })
+    );
+    RevolutCheckout(order.token, "sandbox").then(function (instance) {
+      instance.payWithPopup({
+        onSuccess() {
+          alert("Card added successfully!");
+          handleRetrieveSavedCards();
+        },
+        onError(message) {
+          alert("Something went wrong when trying to save your card. :(");
+        },
+        savePaymentMethodFor: "customer",
+        email: email,
+        name: displayName,
+      });
+    });
+  };
   return (
     <div className="signed-in-page">
       <h1>Welcome {firstName.length ? firstName : " to your account page"}!</h1>
@@ -149,36 +177,45 @@ const SignedInPage = () => {
                 {savedCards?.length < 1 ? (
                   <>
                     <p>You have no saved cards yet. Want to add one? </p>
+                    <Button onClick={handleAddACard} buttonType="inverted">
+                      add a card
+                    </Button>
                   </>
                 ) : (
-                  savedCards.map((savedCard, i) => {
-                    let {
-                      id,
-                      last4,
-                      brand,
-                      cardholder_name,
-                      expiry_month,
-                      expiry_year,
-                    } = savedCard;
-                    return (
-                      <div key={i} className="saved-card">
-                        <div className="brand-and-delete-icon">
-                          <span className="card-brand">{brand}</span>
-                          <DeleteIcon
-                            onClick={() => handleDeleteSavedCard(id)}
-                            className="svg-icon svg-icon__trashcan"
-                          />
+                  <div>
+                    {savedCards.map((savedCard, i) => {
+                      let {
+                        id,
+                        last4,
+                        brand,
+                        cardholder_name,
+                        expiry_month,
+                        expiry_year,
+                      } = savedCard;
+                      return (
+                        <div key={i} className="saved-card">
+                          <div className="brand-and-delete-icon">
+                            <span className="card-brand">{brand}</span>
+                            <DeleteIcon
+                              onClick={() => handleDeleteSavedCard(id)}
+                              className="svg-icon svg-icon__trashcan"
+                            />
+                          </div>
+                          <p>XXXX-XXXX-XXXX-{last4}</p>
+                          <span className="expiry-date-and-cardholder-name">
+                            <p>
+                              {expiry_month}/{expiry_year.toString().slice(2)}
+                            </p>
+                            <p>{cardholder_name}</p>
+                          </span>
                         </div>
-                        <p>XXXX-XXXX-XXXX-{last4}</p>
-                        <span className="expiry-date-and-cardholder-name">
-                          <p>
-                            {expiry_month}/{expiry_year.toString().slice(2)}
-                          </p>
-                          <p>{cardholder_name}</p>
-                        </span>
-                      </div>
-                    );
-                  })
+                      );
+                    })}
+                    <p>Want to add another card?</p>
+                    <Button onClick={handleAddACard} buttonType="inverted">
+                      add a card
+                    </Button>
+                  </div>
                 )}
               </div>
             )}
