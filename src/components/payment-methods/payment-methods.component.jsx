@@ -38,7 +38,6 @@ const PaymentMethods = ({ orderDetails }) => {
       `Do you want to use card ending in ${last4} for payment? Select "ok" to make payment`
     );
 
-    console.log("userConfirmation", userConfirmation);
     if (userConfirmation) {
       handlePayWithSavedCard(paymentMethodId);
     }
@@ -139,7 +138,7 @@ const PaymentMethods = ({ orderDetails }) => {
           </div>
         )}
       </div>
-      {signedInUser && (
+      {signedInUser?.savedPaymentMethods.length > 0 && (
         <Button onClick={handlePayWithASavedCard}>Pay with a saved card</Button>
       )}
       {showSavedCards &&
