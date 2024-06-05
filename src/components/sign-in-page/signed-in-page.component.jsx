@@ -14,7 +14,10 @@ import {
 import RevolutCheckout from "@revolut/checkout";
 
 import "./signed-in-page.styles.scss";
-import { createOrderIdAsync } from "../../store/cart/cart-actions";
+import {
+  clearOrderId,
+  createOrderIdAsync,
+} from "../../store/cart/cart-actions";
 import { currencySelector } from "../../store/cart/cart-selectors";
 
 const SignedInPage = () => {
@@ -108,6 +111,7 @@ const SignedInPage = () => {
         onSuccess() {
           alert("Card added successfully!");
           handleRetrieveSavedCards();
+          dispatch(clearOrderId());
         },
         onError(message) {
           alert("Something went wrong when trying to save your card. :(");
