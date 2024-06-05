@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { apiClientRevolutOrders } from "../../utils/revolutAPI.utils";
+import { apiClientRevolut } from "../../utils/revolut-API.utils";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../store/cart/cart-actions";
 import { Link, useLocation } from "react-router-dom";
+import { RETRIEVE_ORDER } from "../../utils/revolut-API-constants.utils";
 import "./order-confirmation-page.styles.scss";
 
 export const OrderConfirmationPage = ({ orderId }) => {
   const [orderSuccess, setOrderSuccess] = useState("initial");
+  const [componentStateOrderId, setComponentStateOrderId] = useState("");
   const dispatch = useDispatch();
   const location = useLocation();
   let queryParams = new URLSearchParams(location.search);
@@ -14,11 +16,11 @@ export const OrderConfirmationPage = ({ orderId }) => {
   queryFailureMessage
     ? (queryFailureMessage += ". ")
     : (queryFailureMessage = "Unfortunately, your payment failed. ");
-  const successfulParagraph = `Thank you for your order. The payment was successful. Order ID is ${orderId}`;
-  const failureParagraph = `${queryFailureMessage}Order ID is ${orderId}. Your cart has not been cleared in case you wish to try with another card`;
+  const successfulParagraph = `Thank you for your order. The payment was successful. Order ID is ${componentStateOrderId}`;
+  const failureParagraph = `${queryFailureMessage}Order ID is ${componentStateOrderId}. Your cart has not been cleared in case you wish to try with another card`;
 
   const fetchOrder = async () => {
-    let order = await apiClientRevolutOrders("get", orderId, "retrieve_order");
+    let order = await apiClientRevolut("get", orderId, RETRIEVE_ORDER);
     return order;
   };
   useEffect(() => {
@@ -29,12 +31,13 @@ export const OrderConfirmationPage = ({ orderId }) => {
           order.state === "authorised"
         ) {
           setOrderSuccess(true);
+          setComponentStateOrderId(order.id);
           dispatch(clearCart());
         } else {
           setOrderSuccess(false);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   });
 
   return (

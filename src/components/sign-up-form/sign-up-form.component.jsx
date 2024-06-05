@@ -8,6 +8,8 @@ import Button from "../button/button.component";
 import "./sign-up-form.styles.scss";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../store/user/user-actions";
+import { apiClientRevolut } from "../../utils/revolut-API.utils";
+import { CREATE_CUSTOMER } from "../../utils/revolut-API-constants.utils";
 
 const defaultFormFields = {
   displayName: "",
@@ -35,25 +37,34 @@ const SignUpForm = () => {
       alert("passwords do not match");
       return;
     }
-    dispatch(
-      setCurrentUser({
-        displayName,
-        email,
-      })
-    );
 
     try {
       const { user } = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
-      createUserDocumentFromAuth(user, { displayName });
+      let revolutCustomer = await apiClientRevolut(
+        "POST",
+        { email, full_name: displayName },
+        CREATE_CUSTOMER
+      );
+      dispatch(
+        setCurrentUser({
+          ...user,
+          displayName,
+          revolutCustomerId: revolutCustomer.id,
+        })
+      );
+      createUserDocumentFromAuth(user, {
+        displayName,
+        revolutCustomerId: revolutCustomer.id,
+      });
       resetFormFields();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         alert("user creation failed, email already in use");
       } else {
-        console.log(error.message);
+        console.error(error.message);
       }
     }
   };
