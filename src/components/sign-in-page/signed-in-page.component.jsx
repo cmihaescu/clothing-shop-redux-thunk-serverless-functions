@@ -187,7 +187,7 @@ const SignedInPage = () => {
                   </>
                 ) : (
                   <div>
-                    {savedCards.map((savedCard, i) => {
+                    {savedCards?.map((savedCard, i) => {
                       let {
                         id,
                         last4,
