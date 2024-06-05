@@ -8,6 +8,7 @@ const {
   UPDATE_ORDER_ID_START,
   UPDATE_ORDER_ID_SUCCESS,
   UPDATE_ORDER_ID_FAILURE,
+  CLEAR_ORDER_ID,
   PAY_WITH_SAVED_METHOD_START,
   PAY_WITH_SAVED_METHOD_SUCCESS,
   PAY_WITH_SAVED_METHOD_FAILURE,
@@ -69,6 +70,11 @@ export const cartReducer = (state = CART_INITIAL_STATE, action = {}) => {
       return {
         ...state,
         creatingOrder: false,
+      };
+    case CLEAR_ORDER_ID:
+      return {
+        ...state,
+        order_id: "",
       };
     case PAY_WITH_SAVED_METHOD_START:
       return {

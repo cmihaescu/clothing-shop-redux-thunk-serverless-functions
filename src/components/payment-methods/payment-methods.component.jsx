@@ -33,7 +33,17 @@ const PaymentMethods = ({ orderDetails }) => {
     setshowSavedCards(!showSavedCards);
   };
 
-  const handleSelectSavedCardToPay = async (paymentMethodId) => {
+  const handleSelectCardToPay = (paymentMethodId, last4) => {
+    const userConfirmation = window.confirm(
+      `Do you want to use card ending in ${last4} for payment? Select "ok" to make payment`
+    );
+
+    console.log("userConfirmation", userConfirmation);
+    if (userConfirmation) {
+      handlePayWithSavedCard(paymentMethodId);
+    }
+  };
+  const handlePayWithSavedCard = async (paymentMethodId) => {
     if (reduxOrderId.length) {
       let orderId = reduxOrderId;
       await dispatch(
@@ -137,7 +147,7 @@ const PaymentMethods = ({ orderDetails }) => {
           let { id, last4, brand, expiry_month, expiry_year } = savedCard;
           return (
             <div
-              onClick={() => handleSelectSavedCardToPay(id)}
+              onClick={() => handleSelectCardToPay(id, last4)}
               key={i}
               className="saved-card-checkout-page"
             >

@@ -18,6 +18,7 @@ const {
   PAY_WITH_SAVED_METHOD_SUCCESS,
   PAY_WITH_SAVED_METHOD_FAILURE,
   CLEAR_CART,
+  CLEAR_ORDER_ID,
 } = CART_ACTION_TYPES;
 
 export const setCurrency = (currency) => {
@@ -34,6 +35,10 @@ export const setMobileNavigationDropdown = (mobileNavigationDropdown) => {
 
 export const clearCart = () => {
   return createAction(CLEAR_CART);
+};
+
+export const clearOrderId = () => {
+  return createAction(CLEAR_ORDER_ID);
 };
 
 export const updateCart = (cart) => {
@@ -82,6 +87,9 @@ export const payWithSavedPaymentMethodAsync =
       dispatch(payWithSavedPaymentMethodFailure());
       console.log(
         "There was something wrong with the payment request. Error is: " + error
+      );
+      alert(
+        "Unfortunately, the payment with saved card failed. Please try again or contact support"
       );
     }
   };
