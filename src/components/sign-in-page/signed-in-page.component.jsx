@@ -23,7 +23,7 @@ import { currencySelector } from "../../store/cart/cart-selectors";
 const SignedInPage = () => {
   const [orders, setOrders] = useState([]);
   const [showOrders, setShowOrders] = useState(false);
-  const [savedCards, setSavedCards] = useState(false);
+  const [savedCards, setSavedCards] = useState([]);
   const [showSavedCards, setshowSavedCards] = useState(false);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
