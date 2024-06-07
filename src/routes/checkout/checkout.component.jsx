@@ -33,7 +33,7 @@ export const Checkout = () => {
             <CheckoutItem key={item.id} product={item} />
           ))}
           <div className="totalPriceBox">
-            TOTAL: {totalPrice} {currency}
+            TOTAL: {Math.round(Number(totalPrice) * 100) / 100} {currency}
           </div>
           <PaymentMethods orderDetails={orderDetails} />
         </>
