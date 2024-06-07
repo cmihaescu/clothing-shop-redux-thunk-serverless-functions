@@ -4,12 +4,14 @@
 
   img {
     width: 70px;
+    height: 100px;
   }
 
   .item-details {
     display: flex;
     flex-direction: column;
-    padding: 10px 20px;
+    padding: 0 20px 10px 20px;
+    height: 100px;
 
     .name {
       font-size: 16px;

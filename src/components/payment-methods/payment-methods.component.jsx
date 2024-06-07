@@ -8,7 +8,10 @@ import {
 import { useEffect, useState } from "react";
 import { selectCurrentUser } from "../../store/user/user-selector";
 import "./payment-methods.styles.scss";
-import { cartOrderId } from "../../store/cart/cart-selectors";
+import {
+  cartItemsSelector,
+  cartOrderId,
+} from "../../store/cart/cart-selectors";
 
 const PaymentMethods = ({ orderDetails }) => {
   const dispatch = useDispatch();
@@ -17,6 +20,20 @@ const PaymentMethods = ({ orderDetails }) => {
   const baseURL = window.location.origin;
   const signedInUser = useSelector(selectCurrentUser);
   const reduxOrderId = useSelector(cartOrderId);
+  let lineItems = useSelector(cartItemsSelector).map((cartItem) => {
+    const { id, name, imageUrl, price, quantity } = cartItem;
+    return {
+      name,
+      totalAmount: Number(quantity * price * 100),
+      unitPriceAmount: price,
+      quantity: {
+        value: quantity,
+        unit: "Pieces",
+      },
+      productId: id,
+      imageUrls: [imageUrl],
+    };
+  });
   let { amount, currency } = orderDetails;
   if (signedInUser) {
     orderDetails = {
@@ -106,6 +123,7 @@ const PaymentMethods = ({ orderDetails }) => {
           let order = await dispatch(createOrderIdAsync(orderDetails));
           return { publicId: order.token };
         },
+        lineItems,
         buttonStyle: {
           cashback: false,
           radius: "none",
