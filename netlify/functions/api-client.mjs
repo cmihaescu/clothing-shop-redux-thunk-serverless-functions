@@ -3,17 +3,17 @@ const axios = require("axios");
 require("dotenv").config();
 
 const { REVOLUT_SK_SANDBOX } = process.env;
+const {
+  CREATE_ORDER,
+  RETRIEVE_ORDER,
+  RETRIEVE_ORDER_LIST,
+  CREATE_CUSTOMER,
+  RETRIEVE_CUSTOMER_PAYMENT_METHODS,
+  PAY_FOR_AN_ORDER,
+  DELETE_SAVED_PAYMENT_METHOD,
+} = apiClientConstants;
 
 export const handler = async (event) => {
-  const {
-    CREATE_ORDER,
-    RETRIEVE_ORDER,
-    RETRIEVE_ORDER_LIST,
-    CREATE_CUSTOMER,
-    RETRIEVE_CUSTOMER_PAYMENT_METHODS,
-    PAY_FOR_AN_ORDER,
-    DELETE_SAVED_PAYMENT_METHOD,
-  } = apiClientConstants;
   console.log("revolut endpoint hit with", JSON.parse(event.body));
 
   let { body, method, apiAction } = JSON.parse(event.body);
