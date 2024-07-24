@@ -21,10 +21,13 @@ import {
 import { currencySelector } from "../../store/cart/cart-selectors";
 
 const SignedInPage = () => {
+  const [numberOfOrdersDisplayed, setNumberOfOrdersDisplayed] = useState(5);
+  const [showMoreOrdersButtonText, setShowMoreOrdersButtonText] =
+    useState("show more orders");
   const [orders, setOrders] = useState([]);
   const [showOrders, setShowOrders] = useState(false);
   const [savedCards, setSavedCards] = useState([]);
-  const [showSavedCards, setshowSavedCards] = useState(false);
+  const [showSavedCards, setShowSavedCards] = useState(false);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const currency = useSelector(currencySelector);
@@ -47,6 +50,16 @@ const SignedInPage = () => {
       setOrders(ordersList);
     } catch (error) {
       console.error("There was a problem retrieving the orders list: ", error);
+    }
+  };
+
+  const handleShowNextOrders = () => {
+    if (orders.length > numberOfOrdersDisplayed) {
+      setNumberOfOrdersDisplayed(numberOfOrdersDisplayed + 5);
+    } else {
+      setShowMoreOrdersButtonText("close orders list?");
+      setNumberOfOrdersDisplayed(5);
+      setShowOrders(!showOrders);
     }
   };
 
@@ -84,7 +97,7 @@ const SignedInPage = () => {
   };
 
   const handleRetrieveSavedCardsButtonClick = () => {
-    setshowSavedCards(!showSavedCards);
+    setShowSavedCards(!showSavedCards);
   };
   const handleDeleteSavedCard = async (paymentMethodId) => {
     try {
@@ -139,34 +152,44 @@ const SignedInPage = () => {
               my completed orders
             </Button>
             {showOrders && (
-              <ol>
-                {orders?.length < 1 ? (
-                  <>
-                    <p>You have no completed orders yet. </p>
-                    <Link className="go-to-shop-link" to="/shop">
-                      Go to shop?
-                    </Link>
-                  </>
-                ) : (
-                  orders.map((order, i) => {
-                    let { value, currency } = order.order_amount;
-                    value = value.toString();
-                    value =
-                      value.slice(0, value.length - 2) +
-                      "," +
-                      value.slice(value.length - 2);
-                    return (
-                      <li key={i}>
-                        <p>{order.id}</p>
-                        <p>
-                          {value.length < 4 ? "0" + value : value}{" "}
-                          {" " + currency}
-                        </p>
-                      </li>
-                    );
-                  })
-                )}
-              </ol>
+              <>
+                <ol className="order-list">
+                  {orders?.length < 1 ? (
+                    <>
+                      <p>You have no completed orders yet. </p>
+                      <Link className="go-to-shop-link" to="/shop">
+                        Go to shop?
+                      </Link>
+                    </>
+                  ) : (
+                    orders.slice(0, numberOfOrdersDisplayed).map((order, i) => {
+                      let { value, currency } = order.order_amount;
+                      value = value.toString();
+                      value =
+                        value.slice(0, value.length - 2) +
+                        "," +
+                        value.slice(value.length - 2);
+                      return (
+                        <li className="order-list-item" key={i}>
+                          <p>
+                            <strong>Order ref: {order.id}</strong>
+                          </p>
+                          <div>
+                            <p>
+                              {value.length < 4 ? "0" + value : value}{" "}
+                              {" " + currency}
+                            </p>
+                            <p>{order.created_at.slice(0, 10)}</p>
+                          </div>
+                        </li>
+                      );
+                    })
+                  )}
+                </ol>
+                <Button onClick={handleShowNextOrders}>
+                  {showMoreOrdersButtonText}
+                </Button>
+              </>
             )}
           </div>
           <div className="saved-cards">
