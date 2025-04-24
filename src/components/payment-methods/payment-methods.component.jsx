@@ -92,6 +92,7 @@ const PaymentMethods = ({ orderDetails }) => {
           window.location.replace(`${baseURL}/failure`);
         },
         savePaymentMethodFor: saveCardForPopup ? "customer" : false,
+        upsellBanner:true,
         email: signedInUser ? signedInUser?.email : null,
         name: signedInUser ? signedInUser?.displayName : null,
       });
